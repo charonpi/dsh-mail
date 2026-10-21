@@ -1,0 +1,25 @@
+# 依赖与构建产物
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+
+# 测试临时目录与附件落地目录
+.tmp-test/
+mail-attachments/
+
+# 绝不应提交的东西
+*.env
+.env
+.env.*
+*授权码*
+secret*.txt
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+# 本地 GitHub 凭据（绝不提交）
+.gh-token
+*.token
