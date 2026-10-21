@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Mail">
+  <defs>
+    <linearGradient id="dshMailBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3f8cff"/>
+      <stop offset="1" stop-color="#1d5fd0"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="14" width="52" height="36" rx="7" fill="url(#dshMailBody)"/>
+  <path d="M9.5 19.5 32 35l22.5-15.5" fill="none" stroke="#ffffff" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 45.5 24.5 32" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M54 45.5 39.5 32" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

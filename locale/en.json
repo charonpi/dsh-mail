@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Mail (IMAP/SMTP)",
+    "description": "Read and send email for multiple providers over IMAP/SMTP, with attachment upload and download."
+  }
+}

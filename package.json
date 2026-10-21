@@ -1,0 +1,84 @@
+{
+  "name": "dsh-mail",
+  "version": "0.1.0",
+  "description": "多邮箱收发插件：让 agent 通过 IMAP/SMTP 直接收发邮件、上传附件与下载附件（QQ / 163 / 126 / Gmail / Outlook / iCloud / 企业邮 / 自定义）。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "email",
+    "mail",
+    "imap",
+    "smtp",
+    "attachment"
+  ],
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "type": "module",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "node test/smoke.mjs && node test/settings-form.mjs && node test/setup-ui.mjs && node test/smtp-send.mjs && node test/attachments.mjs && node test/imap-receive.mjs && node test/reply-and-append.mjs && node test/validate-manifest.mjs",
+    "test:unit": "node test/smoke.mjs && node test/settings-form.mjs",
+    "test:ui": "node test/setup-ui.mjs",
+    "test:net": "node test/smtp-send.mjs && node test/imap-receive.mjs && node test/reply-and-append.mjs",
+    "test:tools": "node test/print-tools.mjs"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "manifestVersion": 1,
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=20.11",
+    "dsh": ">=0.2.0-rc.1 <0.3.0"
+  },
+  "dependencies": {
+    "@deepseek-ai/cosmokit": "^1.8.6",
+    "@deepseek-ai/dsh-tools": "^0.2.1-rc.2",
+    "@deepseek-ai/schemastery": "^3.18.5",
+    "imapflow": "^2.5.8",
+    "mailparser": "^3.10.0",
+    "nodemailer": "^10.1.7"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh": ">=0.2.0-rc.1 <0.3.0-0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "semver": "^7.7.4",
+    "yaml": "^2.9.1"
+  }
+}

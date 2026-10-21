@@ -1,0 +1,75 @@
+# ============================================================================
+# dsh-mail —— bundle patch（挂载声明）
+# ============================================================================
+# 安装后本层会在每个 profile 启动时叠加，把 dsh-mail 插件插入配置树，
+# 从而向 agent 注册 mail_* 系列工具。
+#
+# 安装：
+#   npm 已发布版本：  dsh plugin --profile <profile> add dsh-mail
+#   本地目录/开发中：  dsh plugin --profile <profile> add link:<本目录绝对路径>
+#   注意：desktop profile 由 Electron 应用独占管理，CLI 会拒绝写入，
+#         请改用插件的图形界面安装（填本目录的绝对路径）。
+#
+# 「dsh plugin add」会把本包写进 profile 的 dsh.profile.bundles 并叠加本 patch，
+# 不需要手工改 profile 的 cordis.patch.yml。
+#
+# ── 怎么填账号（推荐顺序） ──────────────────────────────────────────────────
+# 1) 推荐：在 DSH 的插件设置页里填。本插件的 Config 已把账号相关字段声明为
+#    volatile，设置页会据此生成表单；授权码字段是密文角色，界面里是只写输入框，
+#    值不会回显到浏览器。改动写回 profile 的 Cordis patch，且**不需要重启**。
+# 2) 也可以直接改下面这份 config（就是设置页读写的同一份数据）。
+# 3) 不想让授权码以明文留在配置文件里，就用 passwordEnv / authCodeEnv /
+#    passwordFile 指向环境变量或文件；这三个字段同样可以在设置页里填。
+#
+# 账号字段的完整说明见 README.md。
+# ============================================================================
+
+- insert:
+    - id: dsh-mail
+      name: dsh-mail
+      config:
+        # 不指定时，只有一个账号就自动用它；多账号时必须指定。
+        defaultAccount: null
+
+        # 附件默认落地目录。相对路径按当前会话工作目录解析。
+        attachmentDir: mail-attachments
+
+        # 单封邮件正文最多回传给模型的字符数（超出截断，避免撑爆上下文）。
+        maxBodyChars: 20000
+
+        # 连接/命令超时（毫秒）。
+        timeoutMs: 30000
+
+        # 账号列表。每个账号至少要有 id、address、provider（或自定义 imap/smtp）。
+        # 下面是被注释掉的示例；设置页里填完会自动出现在这里。
+        #
+        # 示例 1：QQ 邮箱（provider 预设已含服务器地址，只需授权码）
+        #   - id: qq
+        #     label: QQ 邮箱
+        #     provider: qq
+        #     address: 123456789@qq.com
+        #     authCode: 十六位授权码           # 也可以用 authCodeEnv
+        #
+        # 示例 2：163 邮箱
+        #   - id: netease
+        #     label: 网易 163
+        #     provider: 163
+        #     address: you@163.com
+        #     authCodeEnv: NETEASE_AUTH_CODE    # 授权码放环境变量里
+        #
+        # 示例 3：Gmail（需要「应用专用密码」，普通登录密码不可用）
+        #   - id: gmail
+        #     label: Gmail
+        #     provider: gmail
+        #     address: you@gmail.com
+        #     passwordEnv: GMAIL_APP_PASSWORD
+        #
+        # 示例 4：完全自定义（覆盖预设或使用预设之外的服务器）
+        #   - id: work
+        #     label: 公司邮
+        #     address: me@example.com
+        #     passwordFile: D:/secrets/work-mail.txt
+        #     imap: { host: imap.example.com, port: 993, secure: true }
+        #     smtp: { host: smtp.example.com, port: 465, secure: true }
+        #     senderName: 王梓铮
+        accounts: []
