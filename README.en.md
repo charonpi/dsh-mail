@@ -13,18 +13,46 @@ Works with QQ, Tencent Exmail, 163, 126, yeah.net, Sina, Sohu, 139, 189, Aliyun 
 
 ## Install
 
-```bash
-# from npm (once published)
-dsh plugin --profile desktop add dsh-mail
+**First decide which profile you are on** — get this wrong and nothing shows up afterwards.
 
-# from a local directory (development)
+DSH profiles are **independent**: a plugin installed into `web` is invisible to the desktop app (`desktop`), and vice versa.
+
+| How you normally run DSH | Profile to install into | How |
+|---|---|---|
+| Desktop app (`DSH NEXT.exe`, Electron) | `desktop` | **GUI only** — the CLI refuses it (see below) |
+| Web build started from a shell (`dsh web`) | `web` | CLI or GUI |
+
+### Desktop app (Electron) users
+
+**The CLI refuses `desktop` outright** — that is by design:
+
+```
+error: profile "desktop" is managed exclusively by the Electron application
+```
+
+So use the GUI: open the **Plugins** panel in the left sidebar → install a third-party plugin →
+`github:charonpi/dsh-mail` (or the absolute path of a local checkout).
+
+### `dsh web` users
+
+```bash
+dsh plugin --profile web add github:charonpi/dsh-mail
+```
+
+For local development use a link, so the source stays in your writable directory:
+
+```bash
 cd /path/to/dsh-mail && npm install
-dsh plugin --profile desktop add link:/absolute/path/to/dsh-mail
+dsh plugin --profile web add link:/absolute/path/to/dsh-mail
 ```
 
 `dsh plugin add` records the package in the profile's `dsh.profile.bundles` and applies the plugin's own `cordis.patch.yml`. **Do not hand-edit** the profile's `package.json` or `cordis.patch.yml`.
 
-**Restart DSH after installing** so the `mail_*` tools appear. Changing configuration does *not* need a restart (see below). Then call `mail_accounts` to confirm your accounts are usable. If you set an environment variable, that needs a restart too.
+> ⚠️ **The `dsh-mail` name on npm is not this plugin.** It is taken by someone else and this
+> project is **not** published to npm, so `dsh plugin add dsh-mail` would install a different
+> package. Always use the `github:` form above.
+
+**Restart DSH after installing** so the `mail_*` tools appear. Changing account configuration does *not* need a restart (see below). Then call `mail_accounts` to confirm your accounts are usable. If you set an environment variable, that needs a restart too.
 
 ---
 
