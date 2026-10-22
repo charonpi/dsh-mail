@@ -30,31 +30,46 @@
 
 ## 安装
 
-前提：DSH 已装好，并且你用的是某个 profile（本仓库在 `desktop` profile 下验证）。
+**先确认你用的是哪个 profile** —— 这一步搞错，装完什么都不会出现。
 
-### 方式一：从 npm 安装（发布后）
+DSH 的 profile 是**互相独立**的：装在 `web` 里的插件，桌面端（`desktop`）看不到，反之亦然。
 
-```bash
-dsh plugin --profile desktop add dsh-mail
+| 你平时怎么用 DSH | 该装进哪个 profile | 怎么装 |
+|---|---|---|
+| 桌面应用（`DSH NEXT.exe`，Electron） | `desktop` | **只能用图形界面**（命令行装不了，见下） |
+| 命令行启动的网页版（`dsh web`） | `web` | 命令行或图形界面都行 |
+
+### 桌面应用（Electron）用户
+
+**命令行装 `desktop` 会被直接拒绝**，这是 DSH 的硬性设计：
+
+```
+error: profile "desktop" is managed exclusively by the Electron application
 ```
 
-### 方式二：从本地目录安装（开发 / 未发布）
+所以请走图形界面：打开左侧栏的 **插件** 页面 → 安装第三方插件 → 填包名
+`github:charonpi/dsh-mail`（或本机目录的绝对路径）。
+
+### 命令行 `dsh web` 用户
 
 ```bash
-# 先装依赖，让插件目录自己有 node_modules
+dsh plugin --profile web add github:charonpi/dsh-mail
+```
+
+本地开发时用 link（源码留在可写目录里，改完重启即可）：
+
+```bash
 cd /path/to/dsh-mail && npm install
-
-# 再把该目录以 link 方式装进 profile（源码留在这个可写目录里）
-dsh plugin --profile desktop add link:/absolute/path/to/dsh-mail
+dsh plugin --profile web add link:/absolute/path/to/dsh-mail
 ```
 
-> `dsh plugin add` 会把这个包写进 profile 的 `dsh.profile.bundles` 并叠加插件的 `cordis.patch.yml`。**不要手工编辑** profile 的 `package.json` 或 `cordis.patch.yml`。
+> `dsh plugin add` 会把这个包写进 profile 的 `dsh.profile.bundles` 并叠加插件的
+> `cordis.patch.yml`。**不要手工编辑** profile 的 `package.json` 或 `cordis.patch.yml`。
 
-### 方式三：图形界面
+> ⚠️ **npm 上的 `dsh-mail` 不是这个插件**。这个名字已被他人占用，本项目**没有**发布到
+> npm，所以 `dsh plugin add dsh-mail` 会装到别的包。请一律用上面的 `github:` 形式。
 
-打开 DSH 的 **插件** 页面，安装 `dsh-mail`（或在「发现」里从市场安装）。
-
-安装之后**重启 DSH**，`mail_*` 工具才会出现（改配置本身不需要重启，见下）。
+安装之后**重启 DSH**，`mail_*` 工具才会出现（改账号配置本身不需要重启，见下）。
 
 安装完可以先让 agent 调一次 `mail_accounts`，它会直接告诉你账号配好没有。
 
